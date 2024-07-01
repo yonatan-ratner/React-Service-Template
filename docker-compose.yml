@@ -1,0 +1,28 @@
+
+name: TODO ## Change name accordingly ##
+services:
+  api:
+    stdin_open: true
+    tty: true
+    container_name: TODO-container ## Change name accordingly ##
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: base
+    volumes:
+        - type: bind
+          source: './Project' # Project in local directory
+          target: /usr/src/app # Project in container directory
+    ports: # host:port binding on localhost between host and container
+        - "3000:3000" # development port, add as required.
+    image: TODO-image ## Change name Accordingly ##
+    develop:
+      watch: # Adapt this section for the relevant 'hot reload' equivalent
+        - action: sync 
+          path: ./Project
+          target: /usr/src/app
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: ./Project/package.json
+    command: TODO
